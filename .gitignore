@@ -1,0 +1,8 @@
+RawMotionData/
+RawWordTables/
+GloVeWiki6B/
+GloVeTwitter27B/
+.DS_Store
+.ipynb_checkpoints/
+data/
+

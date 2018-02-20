@@ -1,0 +1,15 @@
+README.md
+setup.py
+headMotionSynthesis.egg-info/PKG-INFO
+headMotionSynthesis.egg-info/SOURCES.txt
+headMotionSynthesis.egg-info/dependency_links.txt
+headMotionSynthesis.egg-info/top_level.txt
+hms/__init__.py
+hms/data_providers.py
+hms/errors.py
+hms/initialisers.py
+hms/layers.py
+hms/learning_rules.py
+hms/models.py
+hms/optimisers.py
+hms/schedulers.py
