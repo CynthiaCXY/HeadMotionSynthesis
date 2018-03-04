@@ -2,7 +2,10 @@ RawMotionData/
 RawWordTables/
 GloVeWiki6B/
 GloVeTwitter27B/
+GloVeCC42B/
 .DS_Store
 .ipynb_checkpoints/
 data/
-
+*.pyc
+*.pdf
+hms/__pycache__/
