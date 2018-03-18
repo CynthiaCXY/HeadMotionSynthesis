@@ -136,7 +136,7 @@ class DataProvider(object):
 class HMSDataProvider(DataProvider):
     """Data provider for MNIST handwritten digit images."""
 
-    def __init__(self, which_set='train', batch_size=100, max_num_batches=-1,
+    def __init__(self, which_set='train', which_personality='extro', which_embedding='Twitter', batch_size=100, max_num_batches=-1,
                  shuffle_order=True, rng=None):
         """Create a new MNIST data provider object.
 
@@ -158,12 +158,14 @@ class HMSDataProvider(DataProvider):
             'Got {0}'.format(which_set)
         )
         self.which_set = which_set
+        self.which_personality = which_personality
+        self.which_embedding = which_embedding
         # self.num_classes = 10
         # construct path to data using os.path.join to ensure the correct path
         # separator for the current platform / OS is used
         # MLP_DATA_DIR environment variable should point to the data directory
         data_path = os.path.join(
-            os.environ['HMS_DATA_DIR'], 'Twitter/{0}_extro.npz'.format(which_set))
+            os.environ['HMS_DATA_DIR'], '{2}/{0}_{1}.npz'.format(which_set, which_personality, which_embedding))
         assert os.path.isfile(data_path), (
             'Data file does not exist at expected path: ' + data_path
         )
