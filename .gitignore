@@ -9,3 +9,4 @@ data/
 *.pyc
 *.pdf
 hms/__pycache__/
+Predictions/
