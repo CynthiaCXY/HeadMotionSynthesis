@@ -134,25 +134,10 @@ class DataProvider(object):
         return inputs_batch, targets_batch
 
 class HMSDataProvider(DataProvider):
-    """Data provider for MNIST handwritten digit images."""
 
-    def __init__(self, which_set='train', which_personality='extro', which_embedding='Twitter', batch_size=100, max_num_batches=-1,
+    def __init__(self, which_set='train', which_personality='extro', which_embedding='Wiki', batch_size=100, max_num_batches=-1,
                  shuffle_order=True, rng=None):
-        """Create a new MNIST data provider object.
 
-        Args:
-            which_set: One of 'train', 'valid' or 'eval'. Determines which
-                portion of the MNIST data this object should provide.
-            batch_size (int): Number of data points to include in each batch.
-            max_num_batches (int): Maximum number of batches to iterate over
-                in an epoch. If `max_num_batches * batch_size > num_data` then
-                only as many batches as the data can be split into will be
-                used. If set to -1 all of the data will be used.
-            shuffle_order (bool): Whether to randomly permute the order of
-                the data before each epoch.
-            rng (RandomState): A seeded random number generator.
-        """
-        # check a valid which_set was provided
         assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test'], (
             'Expected which_set to be either train, valid or eval. '
             'Got {0}'.format(which_set)
@@ -160,26 +145,50 @@ class HMSDataProvider(DataProvider):
         self.which_set = which_set
         self.which_personality = which_personality
         self.which_embedding = which_embedding
-        # self.num_classes = 10
-        # construct path to data using os.path.join to ensure the correct path
-        # separator for the current platform / OS is used
-        # MLP_DATA_DIR environment variable should point to the data directory
+
         data_path = os.path.join(
             os.environ['HMS_DATA_DIR'], '{2}/{0}_{1}.npz'.format(which_set, which_personality, which_embedding))
         assert os.path.isfile(data_path), (
             'Data file does not exist at expected path: ' + data_path
         )
-        # load data from compressed numpy file
         loaded = np.load(data_path)
         inputs, targets = loaded['inputs'], loaded['targets']
         inputs = inputs.astype(np.float32)
-        # pass the loaded data to the parent class __init__
         super(HMSDataProvider, self).__init__(
             inputs, targets, batch_size, max_num_batches, shuffle_order, rng)
 
     def next(self):
         """Returns next data batch or raises `StopIteration` if at end."""
         inputs_batch, targets_batch = super(HMSDataProvider, self).next()
+        return inputs_batch, targets_batch
+
+class HMS300dDataProvider(DataProvider):
+
+    def __init__(self, which_set='train', which_personality='extro', which_embedding='Wiki', batch_size=100, max_num_batches=-1,
+                 shuffle_order=True, rng=None):
+
+        assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test'], (
+            'Expected which_set to be either train, valid or eval. '
+            'Got {0}'.format(which_set)
+        )
+        self.which_set = which_set
+        self.which_personality = which_personality
+        self.which_embedding = which_embedding
+
+        data_path = os.path.join(
+            os.environ['HMS_DATA_DIR'], '{2}/{0}_300d_skip10_{1}.npz'.format(which_set, which_personality, which_embedding))
+        assert os.path.isfile(data_path), (
+            'Data file does not exist at expected path: ' + data_path
+        )
+        loaded = np.load(data_path)
+        inputs, targets = loaded['inputs'], loaded['targets']
+        inputs = inputs.astype(np.float32)
+        super(HMS300dDataProvider, self).__init__(
+            inputs, targets, batch_size, max_num_batches, shuffle_order, rng)
+
+    def next(self):
+        """Returns next data batch or raises `StopIteration` if at end."""
+        inputs_batch, targets_batch = super(HMS300dDataProvider, self).next()
         return inputs_batch, targets_batch
 
 class EMNISTDataProvider(DataProvider):
