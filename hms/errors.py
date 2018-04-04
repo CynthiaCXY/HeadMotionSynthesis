@@ -47,9 +47,11 @@ class L1Error(object):
 
     def __call__(self, outputs, targets):
         """Calculates error function given a batch of outputs and targets.
+
         Args:
             outputs: Array of model outputs of shape (batch_size, output_dim).
             targets: Array of target outputs of shape (batch_size, output_dim).
+
         Returns:
             Scalar cost function value.
         """
@@ -57,9 +59,11 @@ class L1Error(object):
 
     def grad(self, outputs, targets):
         """Calculates gradient of error function with respect to outputs.
+
         Args:
             outputs: Array of model outputs of shape (batch_size, output_dim).
             targets: Array of target outputs of shape (batch_size, output_dim).
+
         Returns:
             Gradient of error function with respect to outputs.
         """
@@ -69,9 +73,9 @@ class L1Error(object):
         return temp / outputs.shape[0]
 
     def __repr__(self):
-        return 'MeanSquaredErrorCost'
+        return 'L1ErrorCost'
 
-class L2LossFunction(object):
+class L2Error(object):
     """Sum of squared differences (squared Euclidean distance) error."""
 
     def __call__(self, outputs, targets):

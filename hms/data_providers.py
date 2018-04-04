@@ -187,16 +187,16 @@ class HMSDataProvider(DataProvider):
         inputs_batch, targets_batch = super(HMSDataProvider, self).next()
         return inputs_batch, targets_batch
 
-class EMNISTDataProvider(DataProvider):
-    """Data provider for EMNIST handwritten digit images."""
+class HMS300dDataProvider(DataProvider):
+    """Data provider for MNIST handwritten digit images."""
 
-    def __init__(self, which_set='train', batch_size=100, max_num_batches=-1,
+    def __init__(self, which_set='train', which_personality = 'extro', which_windowsize = '100', batch_size=100, max_num_batches=-1,
                  shuffle_order=True, rng=None):
-        """Create a new EMNIST data provider object.
+        """Create a new MNIST data provider object.
 
         Args:
             which_set: One of 'train', 'valid' or 'eval'. Determines which
-                portion of the EMNIST data this object should provide.
+                portion of the MNIST data this object should provide.
             batch_size (int): Number of data points to include in each batch.
             max_num_batches (int): Maximum number of batches to iterate over
                 in an epoch. If `max_num_batches * batch_size > num_data` then
@@ -207,51 +207,39 @@ class EMNISTDataProvider(DataProvider):
             rng (RandomState): A seeded random number generator.
         """
         # check a valid which_set was provided
-        assert which_set in ['train', 'valid', 'test'], (
+        assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test', 'validation7', 'validation8', 'validation9', 'validation10', 'validation11', 'validation12'], (
             'Expected which_set to be either train, valid or eval. '
             'Got {0}'.format(which_set)
         )
+        
+        assert which_personality in ['extro', 'intro'], (
+            'Expected which_personality to be either extro or intro. '
+            'Got {0}'.format(which_personality)
+        )
+        
+        assert which_windowsize in ['30', '50', '80', '100'], (
+            'Expected which_windowsize to be 30, 50, 80 or 100. '
+            'Got {0}'.format(which_windowsize)
+        )
+        
         self.which_set = which_set
-        self.num_classes = 47
-        # construct path to data using os.path.join to ensure the correct path
-        # separator for the current platform / OS is used
-        # MLP_DATA_DIR environment variable should point to the data directory
+        self.which_personality = which_personality
+        self.which_windowsize = which_windowsize
+
         data_path = os.path.join(
-            os.environ['MLP_DATA_DIR'], 'emnist-{0}.npz'.format(which_set))
+            os.environ['HMS_DATA_DIR'], 'DCT{0}/{1}_{2}.npz'.format(which_windowsize, which_set, which_personality))
         assert os.path.isfile(data_path), (
             'Data file does not exist at expected path: ' + data_path
         )
         # load data from compressed numpy file
         loaded = np.load(data_path)
-        print(loaded.keys())
         inputs, targets = loaded['inputs'], loaded['targets']
         inputs = inputs.astype(np.float32)
-        inputs = np.reshape(inputs, newshape=(-1, 28*28))
-        inputs = inputs / 255.0
         # pass the loaded data to the parent class __init__
-        super(EMNISTDataProvider, self).__init__(
+        super(HMS300dDataProvider, self).__init__(
             inputs, targets, batch_size, max_num_batches, shuffle_order, rng)
 
     def next(self):
         """Returns next data batch or raises `StopIteration` if at end."""
-        inputs_batch, targets_batch = super(EMNISTDataProvider, self).next()
-        return inputs_batch, self.to_one_of_k(targets_batch)
-
-    def to_one_of_k(self, int_targets):
-        """Converts integer coded class target to 1 of K coded targets.
-
-        Args:
-            int_targets (ndarray): Array of integer coded class targets (i.e.
-                where an integer from 0 to `num_classes` - 1 is used to
-                indicate which is the correct class). This should be of shape
-                (num_data,).
-
-        Returns:
-            Array of 1 of K coded targets i.e. an array of shape
-            (num_data, num_classes) where for each row all elements are equal
-            to zero except for the column corresponding to the correct class
-            which is equal to one.
-        """
-        one_of_k_targets = np.zeros((int_targets.shape[0], self.num_classes))
-        one_of_k_targets[range(int_targets.shape[0]), int_targets] = 1
-        return one_of_k_targets
+        inputs_batch, targets_batch = super(HMS300dDataProvider, self).next()
+        return inputs_batch, targets_batch
