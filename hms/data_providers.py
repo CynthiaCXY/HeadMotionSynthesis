@@ -138,8 +138,8 @@ class HMSDataProvider(DataProvider):
     def __init__(self, which_set='train', which_personality='extro', which_embedding='Wiki', batch_size=100, max_num_batches=-1,
                  shuffle_order=True, rng=None):
 
-        assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test'], (
-            'Expected which_set to be either train, valid or eval. '
+        assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test','validation7', 'validation8', 'validation9', 'validation10', 'validation11', 'validation12'], (
+            'Expected which_set to be either train, valid or test. '
             'Got {0}'.format(which_set)
         )
         self.which_set = which_set
@@ -167,8 +167,8 @@ class HMS300dDataProvider(DataProvider):
     def __init__(self, which_set='train', which_personality='extro', which_embedding='Wiki', batch_size=100, max_num_batches=-1,
                  shuffle_order=True, rng=None):
 
-        assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test'], (
-            'Expected which_set to be either train, valid or eval. '
+        assert which_set in ['train', 'validation', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test', 'validation7', 'validation8', 'validation9', 'validation10', 'validation11', 'validation12'], (
+            'Expected which_set to be either train, valid or test. '
             'Got {0}'.format(which_set)
         )
         self.which_set = which_set

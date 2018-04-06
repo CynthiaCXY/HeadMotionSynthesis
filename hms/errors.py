@@ -75,7 +75,29 @@ class L1Error(object):
     def __repr__(self):
         return 'MeanSquaredErrorCost'
 
-    
+class L2Error(object):
+    """Sum of squared differences (squared Euclidean distance) error."""
+
+    def __call__(self, outputs, targets):
+        """Calculates error function given a batch of outputs and targets.
+        Args:
+            outputs: Array of model outputs of shape (batch_size, output_dim).
+            targets: Array of target outputs of shape (batch_size, output_dim).
+        Returns:
+            Scalar cost function value.
+        """
+        return 0.5 * np.sum(np.sum((outputs - targets)**2, axis=1))
+
+    def grad(self, outputs, targets):
+        """Calculates gradient of error function with respect to outputs.
+        Args:
+            outputs: Array of model outputs of shape (batch_size, output_dim).
+            targets: Array of target outputs of shape (batch_size, output_dim).
+        Returns:
+            Gradient of error function with respect to outputs.
+        """
+        return (outputs - targets) / outputs.shape[0]
+
 class BinaryCrossEntropyError(object):
     """Binary cross entropy error."""
 
